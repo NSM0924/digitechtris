@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디지텍트리스</title>
+    <link href="css/game.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="wrap">
+        <div class="hold-contents">
+            <canvas id="hold-board"></canvas>
+        </div>
+        <div class="game-contents">
+            <canvas id="game-board"></canvas>
+        </div>
+        <div id="side-contents">
+            <canvas id="nextBlock"></canvas>
+            <p>레벨: <span id="level">1</span> <span id="level-up" class="level-up"></span></p>
+            <p>레벨업까지<br>필요한 라인: <span id="lines">0</span> <span id="remove-lines" class="remove-lines"></span></p>
+            <p>점수: <span id="score">0</span> <span id="add-score" class="add-score"></span></p>
+            <p>
+                <span class="high-score-title">#최고점수</span><br>
+                <span id="high-score">0</span>
+            </p>
+            <div id="side-contents" class="side-contents">
+                <p>
+                    <button id="start-button" onclick="start()" class="start-button">게임 시작</button>
+                </p>
+                <p>
+                    <button id="quit-button" onclick="quit()" class="quit-button">게임 종료</button>
+                </p>
+                <p>
+                    <button id="pause-button" onclick="pause()" class="pause-button">일시 정지</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game/common.js"></script>
+    <script src="js/game/matrix.js"></script>
+    <script src="js/game/move.js"></script>
+    <script src="js/game/draw.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/game/main.js"></script>
+</body>
+</html>
