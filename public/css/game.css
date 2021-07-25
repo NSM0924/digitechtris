@@ -1,15 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 * {
-    background-color: darkblue;
     color: white;
+    font-family: 'Jua', sans-serif;
+    touch-action: manipulation;
+    -ms-user-select: none;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    user-select:none;
 }
 html {
     font-size: 10px;
+}
+body{
+    background-color: #9FDEBD;
+    overflow: hidden;
+}
+a{
+    text-decoration: none;
 }
 
 .wrap {
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr;
     width: fit-content;
+    margin: 0 auto;
 }
 
 .game-contents {
@@ -20,36 +36,43 @@ html {
 }
 
 #side-contents {
+    position: relative;
     padding: 1vw;
     font-size: 1.6rem;
+}
+
+#btn-contents {
+    padding: 1vw;
+    font-size: 1.6rem;
+    position: absolute;
+    bottom: 0;
 }
 
 #nextBlock {
     border: 2px solid white;
 }
 
-.hold-contents {
-    padding: 1vw;
+button{
+    cursor: pointer;
 }
-
 .start-button {
-    background-color: #227aec;
+    background: linear-gradient(135deg, #373B44, #4286f4);
     border: 2px solid #1d42e6;
     color: #d7e5ff;
     text-align: center;
 }
 
 .quit-button {
-    background-color: #e4a656;
+    background: linear-gradient(135deg, #f12711, #f5af19);
     border: 2px solid #d36a15;
-    color: #4e3513;
+    color: #d7e5ff;
     text-align: center;
 }
 
 .pause-button {
-    background-color: #33ce24;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
     border: 2px solid #408d0d;
-    color: #194d09;
+    color: #d7e5ff;
     text-align: center;
 }
 
@@ -58,13 +81,66 @@ html {
 }
 
 .level-up {
-    color: #ffdb76;
+    color: #F79552;
 }
 
 .add-score {
-    color: #a4c4ff;
+    color: #27AAe1;
 }
 
 .high-score-title {
-    color: #ffa3a3;
+    color: #ff7070;
+}
+#hold-contents {
+    padding: 1vw;
+    position: relative;
+}
+.menu-btn{
+    background: #C3E2DD;
+    border: 2px solid #E5C1C5;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.mobile-menu{
+    display: none;
+}
+.mobile-btn{
+    display: none;
+}
+.mobile-btn p{
+    margin: 0;
+}
+
+@media (max-width:420px) {
+    .mobile-menu{
+        display: block;
+    }
+
+    .btn{
+        height: 45px;
+        border: 2px #1d42e6 solid;
+        border-radius: 20px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        background-color: #227aec;
+    }
+    .btn p{
+        color: #d7e5ff;
+    }
+    .mobile-btn{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 1fr;
+        row-gap: 10px;
+    }
+    .arrow>div{
+        display: flex;
+        justify-content: space-between;
+    }
 }

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디지텍트리스 | 도움말</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icon/favicon-16x16.png">
+    <link rel="manifest" href="./icon/site.webmanifest">
+    <link rel="mask-icon" href="./icon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#9fdebd">
+    <meta name="theme-color" content="#ffffff">
+    <link href="css/menubar.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        * {
+            margin: 0;
+        }
+
+        html {
+            height: 100%;
+            font-family: 'Jua', sans-serif;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #9FDEBD;
+            overflow: hidden;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background-color: #C3E2DD;
+            border-radius: 25px;
+            padding: 20px;
+            padding-bottom: 50px;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #e29ba2;
+        }
+
+        .text-box>p {
+            font-size: 22px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="text-box">
+            <h1 class="title">도움말</h1>
+            <h2>조작키</h2>
+            <p>왼쪽으로 움직이기: 방향키◀</p>
+            <p>오른쪽으로 움직이기: 방향키▶</p>
+            <p>아래쪽으로 움직이기: 방향키▼</p>
+            <p>불럭 방향 돌리기: 방향키▲</p>
+            <p>홀드(불럭잡기) 키: C</p>
+            <p>바로내리기: SPACEBAR</p>
+            <br>
+            <h2>점수기준</h2>
+            <p>블럭을 드랍할 때 10점에 레벨을 곱하도록 하였고 하드 드랍 시에는 한 칸당 20점에 레벨을 곱합니다.
+                라인을 제거할시 라인당 100점씩 레벨을 곱하여 점수를 합산해 줍니다.라인 제거 점수 계산 시 콤보 카운트 횟수 만큼 곱하여 획득 점수에 영향을 주었습니다.
+            </p>
+        </div>
+    </div>
+    <nav class="menu" style="bottom: 30px; position: absolute; width: 3em; height: 3em;">
+        <ul>
+            <li><a href="/">테트리스</a></li>
+            <li><a href="./ranking.html">랭킹</a></li>
+            <li><a href="javascript:logout()">로그아웃</a></li>
+        </ul>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script>
+        let displayName;
+        let email;
+        let photoURL;
+        let uid;
+        let dbScore;
+        var firebaseConfig = {
+            apiKey: "AIzaSyAn5SyPQErhHXu0fJeDRlhlj3GKeolfWp8",
+            authDomain: "digitechtris.firebaseapp.com",
+            projectId: "digitechtris",
+            storageBucket: "digitechtris.appspot.com",
+            messagingSenderId: "165379245396",
+            appId: "1:165379245396:web:13950923fff84a0052b4c1",
+            measurementId: "G-YP1JZQZVK7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        const user = firebase.auth().currentUser;
+                        if (user !== null) {
+                            // The user object has basic properties such as display name, email, etc.
+                            displayName = user.displayName;
+                            email = user.email;
+                            photoURL = user.photoURL;
+                            uid = user.uid;
+
+                            console.log(displayName);
+                            console.log(email);
+                            console.log(photoURL);
+                            console.log(uid);
+                        }
+                    } else {
+                        window.location.href = '/login.html';
+                    }
+                })
+            })
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
+            });
+        }
+    </script>
+</body>
+
+</html>

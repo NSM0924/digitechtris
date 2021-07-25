@@ -8,6 +8,9 @@ const holdBoard_ctx = holdBoard.getContext('2d');
 const startButton = document.querySelector('#start-button');
 const quitButton = document.querySelector('#quit-button');
 const pauseButton = document.querySelector('#pause-button');
+const menuBtn1 = document.getElementsByClassName('menu-btn')[0];
+const menuBtn2 = document.getElementsByClassName('menu-btn')[1];
+const menuBtn3 = document.getElementsByClassName('menu-btn')[2];
 let highScoreElem = document.querySelector('#high-score');
 
 const gameBoard_cols = 10;
@@ -32,13 +35,13 @@ let filledLines = [];
 let playing = false;
 
 const COLOR_SET = [
-    '#1726f3',
-    '#df2736',
-    '#38a73b',
-    '#fc902c',
-    '#6f4af7',
-    '#ffd151',
-    '#1c2491',
+    '#FFDC46',
+    '#BD00B6',
+    '#94EB3E',
+    '#FF5675',
+    '#0047BD',
+    '#FFA500',
+    '#148CFF',
     '#9c9c9c'
 ];
 
@@ -48,7 +51,7 @@ let addScoreElem = document.querySelector('#add-score');
 let addScoreId = null;
 let globalAddScore = 0;
 
-let currentLevel = 1;
+// let currentLevel;
 
 let levelElem = document.querySelector('#level');
 let levelUpElem = document.querySelector('#level-up');
@@ -62,3 +65,6 @@ let removeLinesId = null;
 let speed = 800;
 
 let comboCount = 0;
+
+let db;
+let batch;

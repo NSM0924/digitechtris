@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디지텍트리스 | 로그인</title>
+    <link rel="stylesheet" href="./css/login.css">
+    <link href="css/menubar.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icon/favicon-16x16.png">
+    <link rel="manifest" href="./icon/site.webmanifest">
+    <link rel="mask-icon" href="./icon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#9fdebd">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body class="container">
+    <div class="formWrap">
+        <div class="title">
+            <p>디지텍트리스</p>
+        </div>
+        <div class="form">
+            <p class="login">로그인</p>
+            <p>팝업을 허용해 주세요.</p>
+            <p><button type="submit" class="submitBtn" onclick="login()">구글 로그인</button></p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAn5SyPQErhHXu0fJeDRlhlj3GKeolfWp8",
+            authDomain: "digitechtris.firebaseapp.com",
+            projectId: "digitechtris",
+            storageBucket: "digitechtris.appspot.com",
+            messagingSenderId: "165379245396",
+            appId: "1:165379245396:web:13950923fff84a0052b4c1",
+            measurementId: "G-YP1JZQZVK7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        if (!user.email.endsWith('@sdh.hs.kr')) {
+                            return false;
+                        }else{
+                            window.location.href = '/';
+                        }
+                    } else {
+                        firebase
+                            .auth()
+                            .signInWithPopup(provider)
+                            .then((result) => {
+                                if (!result.user.email.endsWith('@sdh.hs.kr')) {
+                                    console.log(result.user.email);
+                                    
+                                    const user = firebase.auth().currentUser;
+                                    
+                                    user.delete().then(() => {
+                                        // User deleted.
+                                    }).catch((error) => {
+                                        // An error ocurred
+                                        // ...
+                                    });
+
+                                    alert("서울디지텍고등학교 이메일이 아닙니다.");
+                                    return false;
+                                    
+                                } else {
+                                    window.location.href = '/';
+                                }
+                            })
+                    }
+                })
+            })
+
+        function login() {
+            firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                firebase
+                    .auth()
+                    .signInWithPopup(provider)
+                    .then((result) => {
+                        if (!result.user.email.endsWith('@sdh.hs.kr')) {
+                            console.log(result.user.email);
+                            alert("서울디지텍고등학교 이메일이 아닙니다.");
+                            const user = firebase.auth().currentUser;
+                            user.delete().then(() => {
+                                // User deleted.
+                            }).catch((error) => {
+                                // An error ocurred
+                                // ...
+                            });
+                            return;
+                        } else {
+                            window.location.href = '/';
+                        }
+                    })
+                })
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>디지텍트리스</title>
+    <link href="css/game.css" rel="stylesheet" />
+    <link href="css/menubar.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icon/favicon-16x16.png">
+    <link rel="manifest" href="./icon/site.webmanifest">
+    <link rel="mask-icon" href="./icon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#9fdebd">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="hold-contents">
+            <canvas id="hold-board"></canvas>
+            <p>HOLD: C</p>
+            <div id="btn-contents" class="mobile-menu">
+                <a href="./ranking.html"><p class="menu-btn">랭킹</p></a>
+                <a href="./help.html"><p class="menu-btn">도움말</p></a>
+                <a href="javascript:logout()"><p class="menu-btn">로그아웃</p></a>
+            </div>
+        </div>
+        <div class="game-contents">
+            <canvas id="game-board"></canvas>
+        </div>
+        <div id="side-contents">
+            <canvas id="nextBlock"></canvas>
+            <p>레벨: <span id="level">1</span><br><span id="level-up" class="level-up"></span></p>
+            <p>레벨업까지<br>필요한 라인: <span id="lines">0</span><br><span id="remove-lines" class="remove-lines"></span></p>
+            <p>점수: <span id="score">0</span><br><span id="add-score" class="add-score"></span></p>
+            <p>
+                <span class="high-score-title">#최고점수</span><br>
+                <span id="high-score">0</span>
+            </p>
+            <div id="btn-contents">
+                <p>
+                    <button id="start-button" onclick="start()" class="start-button">게임 시작</button>
+                </p>
+                <p>
+                    <button id="quit-button" onclick="quit()" class="quit-button">게임 종료</button>
+                </p>
+                <p>
+                    <button id="pause-button" onclick="pause()" class="pause-button">일시 정지</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <nav class="menu">
+        <ul>
+          <li><a href="./ranking.html">랭킹</a></li>
+          <li><a href="./help.html">도움말</a></li>
+          <li><a href="javascript:logout()">로그아웃</a></li>
+        </ul>
+    </nav>
+    <div class="mobile-btn">
+        <div class="sub-btn-box">
+            <div class="btn" style="width: 80%; margin: 0 auto;"><p>HOLD</p></div>
+        </div>
+        <div class="arrow-up">
+            <div class="btn" style="margin: 0 auto; width: 30%;"><p>▲</p></div>
+        </div>
+
+        <div class="sub-btn-box">
+            <div class="btn" style="width: 80%; margin: 0 auto;"><p>SPACE</p></div>
+        </div>
+        <div class="arrow">
+            <div>
+                <div class="btn" style="width: 30%;"><p>◀</p></div>
+                <div class="btn" style="width: 30%;"><p>▼</p></div>
+                <div class="btn" style="width: 30%;"><p>▶</p></div>
+            </div>    
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script>
+        let displayName;
+        let email;
+        let photoURL;
+        let uid;
+        let dbScore;
+        var firebaseConfig = {
+            apiKey: "AIzaSyAn5SyPQErhHXu0fJeDRlhlj3GKeolfWp8",
+            authDomain: "digitechtris.firebaseapp.com",
+            projectId: "digitechtris",
+            storageBucket: "digitechtris.appspot.com",
+            messagingSenderId: "165379245396",
+            appId: "1:165379245396:web:13950923fff84a0052b4c1",
+            measurementId: "G-YP1JZQZVK7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
+            });
+        }
+    </script>
+    <script src="js/game/common.js"></script>
+    <script src="js/game/matrix.js"></script>
+    <script src="js/game/move.js"></script>
+    <script src="js/game/draw.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/game/main.js"></script>
+</body>
+
+</html>

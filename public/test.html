@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>test</h1>
+    <button onclick="logout()"></button>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAn5SyPQErhHXu0fJeDRlhlj3GKeolfWp8",
+            authDomain: "digitechtris.firebaseapp.com",
+            projectId: "digitechtris",
+            storageBucket: "digitechtris.appspot.com",
+            messagingSenderId: "165379245396",
+            appId: "1:165379245396:web:13950923fff84a0052b4c1",
+            measurementId: "G-YP1JZQZVK7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+// 인증하기
+// firebase.auth().signInWithPopup(provider).then(function(result) {
+//     if (!result.user.email.endsWith('@sdh.hs.kr')) {
+//         alert("서울디지텍고등학교 이메일이 아닙니다.");
+//         return;
+//     }
+// 	// This gives you a Google Access Token. You can use it to access the Google API.
+// 	var token = result.credential.accessToken;
+// 	// The signed-in user info.
+// 	var user = result.user;
+	
+// 	console.log(user)		// 인증 후 어떤 데이터를 받아오는지 확인해보기 위함.
+// 	console.log(token)		// 인증 후 어떤 데이터를 받아오는지 확인해보기 위함.
+    
+
+// // ...
+// }).catch(function(error) {
+// 	// Handle Errors here.
+// 	var errorCode = error.code;
+// 	var errorMessage = error.message;
+// 	// The email of the user's account used.
+// 	var email = error.email;
+// 	// The firebase.auth.AuthCredential type that was used.
+// 	var credential = error.credential;
+// 	// ...
+// });
+function logout() {
+    firebase.auth().signOut().then(() => {
+  // Sign-out successful.
+}).catch((error) => {
+  // An error happened.
+});
+}
+
+firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        return console.log('ses');
+                    } else {
+                        firebase
+                            .auth()
+                            .signInWithPopup(provider)
+                            .then(() => {
+                                console.log('ses1');
+                            })
+                    }
+                })
+            })
+    </script>
+
+    <script>
+        const db = firebase.firestore();
+        db.collection('ranking').doc('user4').set({ score: 4000 });
+        db.collection('ranking').orderBy('score', "desc").get().then((data)=>{
+            data.forEach((doc)=>{
+                console.log(doc.data());
+            })
+        })
+    </script>
+</body>
+
+</html>

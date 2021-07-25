@@ -1,12 +1,56 @@
-
 window.onload = () => {
+    db = firebase.firestore();
+    batch = db.batch();
+
+        firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        const user = firebase.auth().currentUser;
+                        if (user !== null) {
+                            // The user object has basic properties such as display name, email, etc.
+                            displayName = user.displayName;
+                            email = user.email;
+                            photoURL = user.photoURL;
+                            uid = user.uid;
+                            console.log(user);
+                            console.log(displayName);
+                            console.log(email);
+                            console.log(photoURL);
+                            console.log(uid);
+
+                            let docRef = db.collection('ranking').doc(uid);
+                            docRef.get().then((doc) => {
+                                dbScore = doc.data().score;
+                                highScoreElem.textContent = dbScore;
+                                level = doc.data().level;
+                                maxLevel = level;
+                            })
+                            
+                            db.collection('ranking').doc(uid).get().then((doc) => {
+                                if (doc.data()) {
+                                    return;
+                                } else {
+                                    db.collection('ranking').doc(uid).set({ score: 0, level: 1, displayName: displayName, email: email, photoURL: photoURL });
+                                }
+                            })
+
+                        }
+                    } else {
+                        window.location.href = '/login.html';
+                    }
+                })
+            })
+
     main();
 }
 
 function main() {
     rebuild();
     window.addEventListener('resize', rebuild);
-    highScoreElem.textContent = localStorage.getItem('high-score')||0;
 }
 
 function start() {
@@ -50,6 +94,7 @@ function reset() {
     resetScoreBoard();
     speed = 800;
     comboCount = 0;
+    holdCheck = true;
 }
 
 function setButtonStyle(elem, witdh) {
@@ -78,11 +123,15 @@ function resize() {
     holdBoard_ctx.scale(blockSize, blockSize);
     
     const fontSize = window_width/350;
+    document.getElementById('hold-contents').style.fontSize = fontSize+'rem';
     document.getElementById('side-contents').style.fontSize = fontSize+'rem';
 
     setButtonStyle(startButton, window_width);
     setButtonStyle(quitButton, window_width);
     setButtonStyle(pauseButton, window_width);
+    setButtonStyle(menuBtn1, window_width);
+    setButtonStyle(menuBtn2, window_width);
+    setButtonStyle(menuBtn3, window_width);
 }
 
 function rebuild() {
@@ -322,10 +371,18 @@ function quit() {
     requestAnimationId = null;
     
     speed = 800;
-    
-    let highScore = Number(highScoreElem.textContent);
+
+    let highLevel = Number(levelElem.textContent);
+    if(highLevel > maxLevel){
+        db.collection('ranking').doc(uid).update({ level: currentLevel });
+    }
+
+    highScore = Number(highScoreElem.textContent);
     if(totalScore > highScore) {
-        localStorage.setItem('high-score', totalScore);
+        // localStorage.setItem('high-score', totalScore);
+        console.log(totalScore);
+        console.log(highScore);
+        db.collection('ranking').doc(uid).update({ score: totalScore });
         highScoreElem.textContent = totalScore;
         gameBoard_ctx.fillStyle = '#f0b71b';
         gameBoard_ctx.fillRect(1, 3, 8, 1.8);
@@ -333,6 +390,8 @@ function quit() {
         gameBoard_ctx.fillStyle = '#ffffff';
         gameBoard_ctx.fillText('기록 갱신', 2.8, 4.2);
     } else {
+        console.log(totalScore);
+        console.log(highScore);
         gameBoard_ctx.fillStyle = '#f0b71b';
         gameBoard_ctx.fillRect(1, 3, 8, 1.8);
         gameBoard_ctx.font = '1px NeoDungGeunMo';

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디지텍트리스 | 랭킹</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icon/favicon-16x16.png">
+    <link rel="manifest" href="./icon/site.webmanifest">
+    <link rel="mask-icon" href="./icon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#9fdebd">
+    <meta name="theme-color" content="#ffffff">
+    <link href="css/menubar.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        * {
+            margin: 0;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Jua', sans-serif;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #9FDEBD;
+            overflow: hidden;
+        }
+
+        .container {
+            padding-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .small-box {
+            width: 60%;
+            border-radius: 50px;
+            padding: 50px;
+            background-color: #C3E2DD;
+        }
+
+        .small-box {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .table1 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .table2 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            row-gap: 10px;
+        }
+
+        .rank {
+            font-size: 23px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        img{
+            width: 50px;
+            border-radius: 55px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="small-box">
+            <p class="title">TOP 5 유저</p>
+            <div class="table1">
+                <div>
+                    <p>1위</p>
+                </div>
+                <div>
+                    <p>2위</p>
+                </div>
+                <div>
+                    <p>3위</p>
+                </div>
+                <div>
+                    <p>4위</p>
+                </div>
+                <div>
+                    <p>5위</p>
+                </div>
+                <div id="rank1" class="rank"></div>
+                <div id="rank2" class="rank"></div>
+                <div id="rank3" class="rank"></div>
+                <div id="rank4" class="rank"></div>
+                <div id="rank5" class="rank"></div>
+            </div>
+            <p class="title" style="margin-top: 20px;">순위</p>
+            <div class="table2">
+                <div>
+                    <p>순위</p>
+                </div>
+                <div>
+                    <p>프로필 / 이름</p>
+                </div>
+                <div>
+                    <p>점수</p>
+                </div>
+                <div>
+                    <p>최고 레벨</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="menu" style="bottom: 30px; position: absolute; width: 3em; height: 3em;">
+        <ul>
+            <li><a href="/">테트리스</a></li>
+            <li><a href="./help.html">도움말</a></li>
+            <li><a href="javascript:logout()">로그아웃</a></li>
+        </ul>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script>
+        let displayName;
+        let email;
+        let photoURL;
+        let uid;
+        let dbScore;
+        var firebaseConfig = {
+            apiKey: "AIzaSyAn5SyPQErhHXu0fJeDRlhlj3GKeolfWp8",
+            authDomain: "digitechtris.firebaseapp.com",
+            projectId: "digitechtris",
+            storageBucket: "digitechtris.appspot.com",
+            messagingSenderId: "165379245396",
+            appId: "1:165379245396:web:13950923fff84a0052b4c1",
+            measurementId: "G-YP1JZQZVK7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        const user = firebase.auth().currentUser;
+                        if (user !== null) {
+                            // The user object has basic properties such as display name, email, etc.
+                            displayName = user.displayName;
+                            email = user.email;
+                            photoURL = user.photoURL;
+                            uid = user.uid;
+
+                            console.log(displayName);
+                            console.log(email);
+                            console.log(photoURL);
+                            console.log(uid);
+                        }
+                    } else {
+                        window.location.href = '/login.html';
+                    }
+                })
+            })
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
+            });
+        }
+    </script>
+    <script src="./js/ranking.js"></script>
+</body>
+
+</html>
